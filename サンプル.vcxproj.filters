@@ -7,6 +7,9 @@
     <Filter Include="program\system">
       <UniqueIdentifier>{025ad2b9-8acc-4c6c-bcd5-2fceeee3257d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="program\game">
+      <UniqueIdentifier>{9189346b-5ce2-4b86-8c4b-9b0f9c8165c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="program\Game.cpp">
@@ -24,6 +27,9 @@
     <ClCompile Include="program\Float2.cpp">
       <Filter>program\system</Filter>
     </ClCompile>
+    <ClCompile Include="program\bullet.cpp">
+      <Filter>program\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Game.h">
@@ -40,6 +46,9 @@
     </ClInclude>
     <ClInclude Include="program\Float2.h">
       <Filter>program\system</Filter>
+    </ClInclude>
+    <ClInclude Include="program\bullet.h">
+      <Filter>program\game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

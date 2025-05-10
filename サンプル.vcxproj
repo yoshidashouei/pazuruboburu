@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="program\bullet.cpp" />
     <ClCompile Include="program\Float2.cpp" />
     <ClCompile Include="program\Game.cpp" />
     <ClCompile Include="program\Hit.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="program\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="program\bullet.h" />
     <ClInclude Include="program\Float2.h" />
     <ClInclude Include="program\Game.h" />
     <ClInclude Include="program\Hit.h" />

@@ -16,7 +16,7 @@ int shot_num;
 
 void Bullet::Init()
 {
-	m_image[0] = LoadGraph("data/ball01_red.png");
+	m_image[0]  = LoadGraph("data/ball01_red.png");
 
 	//’e
 	for (int i = 0; i < BULLET_MAX; i++) {

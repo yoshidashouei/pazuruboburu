@@ -1,7 +1,2 @@
-﻿  Float2.cpp
-  Game.cpp
-  Hit.cpp
-  Main.cpp
-  Random.cpp
-  コードを生成中...
-  サンプル.vcxproj -> F:\ゲーム制作課題\課題\x64\Debug\サンプル.exe
+﻿  bullet.cpp
+  サンプル.vcxproj -> F:\puzzlebubble\x64\Debug\サンプル.exe

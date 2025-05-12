@@ -14,34 +14,44 @@ int bullet_mode[BULLET_MAX];
 //	何番目を撃つか
 int shot_num;
 
+int color_random;
+
 void Bullet::Init()
 {
 	m_image[0]  = LoadGraph("data/ball01_red.png");
-
+	m_image[1] = LoadGraph("data/ball02_blue.png");
+	m_image[2] = LoadGraph("data/ball03_gold.png");
+	m_image[3] = LoadGraph("data/ball04_purple.png");
+	m_image[4] = LoadGraph("data/ball05_silber.png");
 	//弾
 	for (int i = 0; i < BULLET_MAX; i++) {
-		bullet_x[i] = 100.0f;
-		bullet_y[i] = 100.0f;
+		bullet_x[i] = 400.0f;
+		bullet_y[i] = 850.0f;
 		bullet_mode[i] = MODE_WAIT;	//	飛んでいない状態から開始
 	}
 
 	//	０番目のミサイルを撃つから始めます
 	shot_num = 0;
 
+	color_random = GetRand(4);
 }
 
 void Bullet::Update()
 {
 	//弾の発射処理
-	if (PushHitKey(KEY_INPUT_SPACE))
-	{
-		bullet_mode[shot_num] = MODE_MOVE;		//	動く状態にします
-		bullet_x[shot_num] = 400;			//	プレイヤーの座標にします
-		bullet_y[shot_num] = 900;
+	for (int i = 0; i < BULLET_MAX; i++) {
+		if (bullet_mode[i] == MODE_WAIT) {
+			if (PushHitKey(KEY_INPUT_SPACE))
+			{
+				bullet_mode[shot_num] = MODE_MOVE;		//	動く状態にします
+				bullet_x[shot_num] = 400;			//	プレイヤーの座標にします
+				bullet_y[shot_num] = 850;
 
-		shot_num++;								//	次の番号にする
-		if (shot_num >= BULLET_MAX) {			//	最後まで行ったら
-			shot_num = 0;						//	最初から
+				shot_num++;								//	次の番号にする
+				if (shot_num >= BULLET_MAX) {			//	最後まで行ったら
+					shot_num = 0;						//	最初から
+				}
+			}
 		}
 	}
 	//弾の移動処理
@@ -55,14 +65,27 @@ void Bullet::Update()
 			bullet_y[i] -= BULLET_SPEED;
 
 			//	画面の外に行ったら飛んでいない状態にします（どの方向に飛ぶか分からないので上下左右で判定します）
-			if (bullet_x[i] < 0.0f)		bullet_mode[i] = MODE_WAIT;
-			if (bullet_x[i] > SCREEN_W)	bullet_mode[i] = MODE_WAIT;
-			if (bullet_y[i] < 0.0f)	    bullet_mode[i] = MODE_WAIT;
-			if (bullet_y[i] > SCREEN_H)	bullet_mode[i] = MODE_WAIT;
+			if (bullet_x[i] < 0.0f) {
+				bullet_mode[i] = MODE_WAIT;
+				color_random = GetRand(4);
+			}
+			if (bullet_x[i] > SCREEN_W) {
+				bullet_mode[i] = MODE_WAIT;
+				color_random = GetRand(4);
+			}
+			if (bullet_y[i] < 0.0f) {
+				bullet_mode[i] = MODE_WAIT;
+				color_random = GetRand(4);
+			}
+			if (bullet_y[i] > SCREEN_H) {
+				bullet_mode[i] = MODE_WAIT;
+				color_random = GetRand(4);
+			}
 		}
 		else if (bullet_mode[i] == MODE_WAIT)
 		{
-			bullet_x[i] = -100;
+			bullet_x[i] = 400;
+			bullet_y[i] = 850;
 		}
 	}
 
@@ -74,7 +97,7 @@ void Bullet::Render()
 	// 弾
 	for (int i = 0; i < BULLET_MAX; i++) {
 			//	ミサイルの座標と向きを渡して描画
-		DrawRotaGraphF(bullet_x[i], bullet_y[i], 0.3f, 1, m_image[0], TRUE);
+		DrawRotaGraphF(bullet_x[i], bullet_y[i], 0.5f, 0, m_image[color_random], TRUE);
 	}
 
 }

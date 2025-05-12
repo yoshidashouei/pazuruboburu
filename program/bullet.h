@@ -18,7 +18,7 @@ public:
 	float bullet_x[BULLET_MAX];
 	float bullet_y[BULLET_MAX];
 	int m_rot_;
-	int m_image[6];
+	int m_image[5];
 
 	void Init();	//	‰Šú‰»ˆ—
 	void Update();	//	XVˆ—

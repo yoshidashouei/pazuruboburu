@@ -9,6 +9,7 @@
 //弾の移動スピード
 #define BULLET_SPEED		20.0f
 
+#define ROT_SPEED 3.0f
 
 class Bullet
 {
@@ -17,8 +18,14 @@ public:
 
 	float bullet_x[BULLET_MAX];
 	float bullet_y[BULLET_MAX];
-	int m_rot_;
+	int m_rot;
 	int m_image[5];
+	Float2 m_line;
+	int line_image;
+	int keep_rot = 0;
+
+
+
 
 	void Init();	//	初期化処理
 	void Update();	//	更新処理

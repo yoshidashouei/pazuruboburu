@@ -14,7 +14,7 @@ int bullet_mode[BULLET_MAX];
 //	何番目を撃つか
 int shot_num;
 
-int color_random;
+int color_random[BULLET_MAX];
 
 void Bullet::Init()
 {
@@ -26,17 +26,20 @@ void Bullet::Init()
 	line_image = LoadGraph("data/line.png");
 	//弾
 	for (int i = 0; i < BULLET_MAX; i++) {
-		bullet_x[i] = 390.0f;
+		bullet_x[i] = 395.0f;
 		bullet_y[i] = 870.0f;
 		bullet_mode[i] = MODE_WAIT;	//	飛んでいない状態から開始
+		m_rot[i] = 0.0f;
+		color_random[i] = GetRand(4);
+
+
 	}
 
 	//	０番目のミサイルを撃つから始めます
 	shot_num = 0;
 
-	color_random = GetRand(4);
-	m_rot = 0.0f;
 	m_line.Set(395.0f, 870.0f);
+	arrow_rot = 0;
 
 }
 
@@ -44,23 +47,24 @@ void Bullet::Update()
 {
 
 	//左右キーで方向を変える
-	if (CheckHitKey(KEY_INPUT_RIGHT))	m_rot += ROT_SPEED;
-	if (CheckHitKey(KEY_INPUT_LEFT))	m_rot -= ROT_SPEED;
-	if (m_rot > 75) {
-		m_rot = 75;
-	}
-	if (m_rot < -75) {
-
-		m_rot = -75;
+	if (CheckHitKey(KEY_INPUT_RIGHT))	arrow_rot += ROT_SPEED;
+	if (CheckHitKey(KEY_INPUT_LEFT))	arrow_rot -= ROT_SPEED;
+	if (arrow_rot > 75) {
+		arrow_rot = 75;
+	}  
+	if (arrow_rot < -75) {	
+		arrow_rot = -75;
 	}
 
 	//弾の発射処理
-	for (int i = 0; i < BULLET_MAX; i++) {
-		if (bullet_mode[i] == MODE_WAIT) {
+	//for (int i = 0; i < BULLET_MAX; i++) {
+
+		//if (bullet_mode[i] == MODE_WAIT) {
+
 			if (PushHitKey(KEY_INPUT_SPACE))
 			{
 				//WAITの時にrotを毎回保存する
-				keep_rot = m_rot;
+				m_rot[shot_num] = arrow_rot;
 
 				bullet_mode[shot_num] = MODE_MOVE;		//	動く状態にします
 				bullet_x[shot_num] = 395;			//	プレイヤーの座標にします
@@ -71,8 +75,8 @@ void Bullet::Update()
 					shot_num = 0;						//	最初から
 				}
 			}
-		}
-	}
+		//}
+	//}
 	//弾の移動処理
 	//	全弾の移動処理
 	for (int i = 0; i < BULLET_MAX; i++) {
@@ -81,31 +85,28 @@ void Bullet::Update()
 			//	向いている方向に移動
 			//	Ｘ方向の移動は移動スピードを、向きに沿っている長さに分けた長さ分移動
 			//	Ｙ方向の移動は移動スピードを、向きの向かいの長さに分けた長さ分移動
-			bullet_x[i] -= BULLET_SPEED * cosf(TO_RADIAN(keep_rot + 90));
-			bullet_y[i] -= BULLET_SPEED * sinf(TO_RADIAN(keep_rot + 90));
+			bullet_x[i] -= BULLET_SPEED * cosf(TO_RADIAN(m_rot[i] + 90 ));
+			bullet_y[i] -= BULLET_SPEED * sinf(TO_RADIAN(m_rot[i] + 90 ));
 
 			//	画面の外に行ったら飛んでいない状態にします（どの方向に飛ぶか分からないので上下左右で判定します）
-			if (bullet_x[i] < 0.0f) {
-				bullet_mode[i] = MODE_WAIT;
-				color_random = GetRand(4);
+			if (bullet_x[i] < 0.0f + 120.0f) {
+				m_rot[i] *= -1;
 			}
-			if (bullet_x[i] > SCREEN_W) {
-				bullet_mode[i] = MODE_WAIT;
-				color_random = GetRand(4);
+			if (bullet_x[i] > SCREEN_W -120.0f) {
+				m_rot[i] *= -1;
 			}
-			if (bullet_y[i] < 0.0f) {
+			if (bullet_y[i] < 0.0f + 150.0f) {
+				color_random[shot_num] = GetRand(4);
 				bullet_mode[i] = MODE_WAIT;
-				color_random = GetRand(4);
 			}
 			if (bullet_y[i] > SCREEN_H) {
 				bullet_mode[i] = MODE_WAIT;
-				color_random = GetRand(4);
 			}
 		}
 		else if (bullet_mode[i] == MODE_WAIT)
-		{
-			bullet_x[i] = 395;
-			bullet_y[i] = 870;
+		{	
+			//bullet_x[i] = 395;
+			//bullet_y[i] = 870;
 		}
 	}
 
@@ -114,14 +115,17 @@ void Bullet::Update()
 
 void Bullet::Render()
 {
+	//発射ラインの描画
+	DrawRotaGraphF(m_line.x, m_line.y, 2.0f, TO_RADIAN(arrow_rot), line_image, TRUE);
+
 	// 弾
 	for (int i = 0; i < BULLET_MAX; i++) {
-		//発射ラインの描画
-		DrawRotaGraphF(m_line.x, m_line.y, 2.0f, TO_RADIAN(m_rot), line_image, TRUE);
+
 		//	ミサイルの座標と向きを渡して描画
-		DrawRotaGraphF(bullet_x[i], bullet_y[i], 0.5f, 0, m_image[color_random], TRUE);
+		DrawRotaGraphF(bullet_x[i], bullet_y[i], 0.5f, 0, m_image[color_random[i]], TRUE);
 
 	}
+	DrawRotaGraphF(395, 870, 0.5f, 0, m_image[color_random[shot_num]], TRUE);
 
 }
 

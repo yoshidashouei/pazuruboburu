@@ -15,14 +15,15 @@ class Bullet
 {
 public:
 
+	float m_speed;
 
 	float bullet_x[BULLET_MAX];
 	float bullet_y[BULLET_MAX];
-	int m_rot;
+	int m_rot[BULLET_MAX];
 	int m_image[5];
 	Float2 m_line;
 	int line_image;
-	int keep_rot = 0;
+	int arrow_rot;
 
 
 
